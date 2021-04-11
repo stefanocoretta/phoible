@@ -1,0 +1,43 @@
+---
+title: "Phoible frequencies"
+author: "Stefano Coretta"
+date: "4/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = here::here())
+library(tidyverse)
+theme_set(theme_minimal())
+load(url("https://github.com/phoible/dev/blob/v2.0/data/phoible.RData?raw=true"))
+```
+
+```{r top-10}
+phoible %>%
+  count(Phoneme) %>%
+  arrange(desc(n)) %>%
+  filter(between(row_number(), 1, 10)) %>%
+  ggplot(aes(x = reorder(Phoneme, desc(n)), y = n)) +
+  geom_bar(stat = "identity")
+```
+
+```{r top-10-vowels}
+phoible %>%
+  filter(SegmentClass == "vowel") %>%
+  count(Phoneme) %>%
+  arrange(desc(n)) %>%
+  filter(between(row_number(), 1, 10)) %>%
+  ggplot(aes(x = reorder(Phoneme, desc(n)), y = n)) +
+  geom_bar(stat = "identity")
+```
+
+```{r top-10-consonants}
+phoible %>%
+  filter(SegmentClass == "consonant") %>%
+  count(Phoneme) %>%
+  arrange(desc(n)) %>%
+  filter(between(row_number(), 1, 10)) %>%
+  ggplot(aes(x = reorder(Phoneme, desc(n)), y = n)) +
+  geom_bar(stat = "identity")
+```
